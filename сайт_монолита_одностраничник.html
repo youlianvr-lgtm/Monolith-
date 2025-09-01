@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Монолит — Голос Зоны</title>
+  <meta name="description" content="Фанатский сайт с проповедями и призывами вступить в Монолит (вселенной S.T.A.L.K.E.R.)." />
+  <style>
+    /* ====== Base ====== */
+    :root{
+      --bg:#070b0a;
+      --panel:#0e1512;
+      --ink:#e7fbea;
+      --muted:#b6c9b9;
+      --mono:#7efc79; /* неоново-зелёный монолита */
+      --mono-dim:#2ea043;
+      --accent:#54ffe5;
+      --danger:#ff5577;
+      --glow:0 0 20px rgba(126,252,121,.35),0 0 45px rgba(84,255,229,.15);
+      --radius:18px;
+      --shadow:0 10px 35px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",sans-serif;
+      color:var(--ink); background: radial-gradient(1200px 600px at 70% -10%, rgba(84,255,229,.06), transparent 60%),
+      radial-gradient(900px 500px at 10% -20%, rgba(126,252,121,.06), transparent 60%),
+      linear-gradient(180deg, #0a0f0d 0%, #070b0a 50%, #050807 100%);
+      letter-spacing:.2px;
+    }
+    a{color:var(--mono)}
+    .container{max-width:1100px; margin:0 auto; padding:24px}
+
+    /* ====== Glitch Title ====== */
+    .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:2px; text-transform:uppercase}
+    .glitch[data-text]{
+      color:var(--mono); text-shadow:0 0 12px rgba(126,252,121,.6);
+      filter: drop-shadow(0 0 10px rgba(84,255,229,.3));
+    }
+    .glitch::before,.glitch::after{content:attr(data-text); position:absolute; left:0; top:0; width:100%; overflow:hidden}
+    .glitch::before{animation:gl1 3.5s infinite linear; color:var(--accent); mix-blend-mode:screen}
+    .glitch::after{animation:gl2 2.8s infinite linear; color:#94ff5b; mix-blend-mode:screen}
+    @keyframes gl1{ 0%{clip-path:inset(0 0 80% 0)} 20%{clip-path:inset(10% 0 60% 0)} 40%{clip-path:inset(40% 0 40% 0)} 60%{clip-path:inset(80% 0 0 0)} 80%{clip-path:inset(30% 0 30% 0)} 100%{clip-path:inset(0 0 80% 0)} }
+    @keyframes gl2{ 0%{clip-path:inset(70% 0 0 0)} 25%{clip-path:inset(30% 0 40% 0)} 50%{clip-path:inset(0 0 70% 0)} 75%{clip-path:inset(40% 0 30% 0)} 100%{clip-path:inset(70% 0 0 0)} }
+
+    /* ====== Header / Hero ====== */
+    .hero{position:relative; padding:84px 0 64px; text-align:center}
+    .scanlines::before{content:""; pointer-events:none; position:absolute; inset:0; background: repeating-linear-gradient(transparent, transparent 2px, rgba(255,255,255,.03) 3px), radial-gradient(800px 300px at 50% -10%, rgba(84,255,229,.05), transparent 70%)}
+    .hero h1{font-size: clamp(36px, 4.5vw, 68px); margin:0 0 8px}
+    .hero p{max-width:760px; margin:0 auto; color:var(--muted); font-size:clamp(14px, 1.6vw, 18px)}
+    .cta{margin-top:28px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+    .btn{appearance:none; border:0; padding:14px 20px; border-radius:var(--radius); background:linear-gradient(180deg, rgba(84,255,229,.12), rgba(126,252,121,.08)); color:var(--ink); font-weight:700; letter-spacing:.4px; cursor:pointer; box-shadow:var(--shadow); backdrop-filter: blur(3px)}
+    .btn:hover{box-shadow:var(--shadow), 0 0 0 2px rgba(126,252,121,.25); filter:saturate(1.2)}
+    .btn.primary{background:linear-gradient(180deg, rgba(126,252,121,.18), rgba(126,252,121,.10)); color:#d9ffe0; text-shadow:0 0 8px rgba(126,252,121,.45)}
+
+    /* ====== Panels / Cards ====== */
+    .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:18px; margin:42px 0}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; position:relative}
+    .card h3{margin:.2rem 0 .6rem; font-size:20px; color:#d7ffe2}
+    .card p{color:var(--muted); line-height:1.6}
+    .badge{display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(84,255,229,.08); color:var(--accent); font-weight:700; font-size:12px; letter-spacing:.6px; text-transform:uppercase}
+
+    /* ====== Sermons (Accordion) ====== */
+    details{border-radius:14px; background:linear-gradient(180deg, rgba(84,255,229,.06), rgba(255,255,255,.02)); padding:14px 16px; box-shadow:var(--shadow)}
+    details+details{margin-top:12px}
+    summary{cursor:pointer; list-style:none; outline:none; display:flex; align-items:center; gap:10px; color:#d9ffe0; font-weight:700}
+    summary::-webkit-details-marker{display:none}
+    .sermon{color:var(--muted); line-height:1.75; margin-top:8px}
+
+    /* ====== Join Modal ====== */
+    .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.5)}
+    .modal.open{display:grid}
+    .modal .dialog{width:min(560px, 92vw); background:var(--panel); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+    .modal h3{margin:0 0 12px}
+    .field{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+    input, textarea{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:#0a110f; color:var(--ink)}
+    .dialog .actions{display:flex; justify-content:flex-end; gap:10px; margin-top:14px}
+
+    /* ====== Footer ====== */
+    footer{margin-top:56px; padding:28px 0; color:#98b1a0; font-size:14px; text-align:center}
+    .divider{height:1px; background:linear-gradient(90deg, transparent, rgba(126,252,121,.25), transparent); margin:30px 0}
+
+    /* ====== Decorative ====== */
+    .ring{position:absolute; inset:auto; height:180px; width:180px; border-radius:50%; left:50%; transform:translateX(-50%); bottom:-36px; border:2px solid rgba(126,252,121,.25); box-shadow:var(--glow); filter:blur(.2px)}
+    .pulse{position:absolute; left:50%; transform:translateX(-50%); width:3px; height:26px; background:var(--mono); box-shadow:0 0 14px rgba(126,252,121,.7); animation:pulse 1.8s infinite}
+    @keyframes pulse{0%{opacity:1; transform:translateX(-50%) scaleY(1)} 50%{opacity:.4; transform:translateX(-50%) scaleY(.5)} 100%{opacity:1; transform:translateX(-50%) scaleY(1)}}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .mono{color:var(--mono)}
+    .note{font-size:13px; opacity:.8}
+  </style>
+</head>
+<body>
+  <header class="hero scanlines">
+    <div class="container">
+      <div class="ring"></div>
+      <div class="pulse"></div>
+      <h1 class="glitch" aria-label="Монолит" data-text="Монолит">Монолит</h1>
+      <p>Голос Зоны звучит в каждом шорохе. Слушай его, следуй за ним и стань частью Тишины. Этот сайт — фанатское переосмысление идеологии Монолита из вселенной <span class="mono">S.T.A.L.K.E.R.</span></p>
+      <div class="cta">
+        <button class="btn primary" id="joinBtn">Присоединиться к Эху</button>
+        <button class="btn" id="soundBtn" aria-pressed="false">Запустить шёпот Зоны</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <span class="badge">Догматы</span>
+      <div class="grid">
+        <article class="card">
+          <h3>Единство с Пустотой</h3>
+          <p>Зона — не место, а состояние. Очищай мысль, чтобы слышать её колебания. Чем меньше шумов — тем ближе ответ.</p>
+        </article>
+        <article class="card">
+          <h3>Посредник — Монолит</h3>
+          <p>Через Монолит мы прикасаемся к центру. Мы — проводники, не владельцы. Проси мало, служи много.</p>
+        </article>
+        <article class="card">
+          <h3>Тишина над Словом</h3>
+          <p>Говори, когда требуется, молчи — когда слышишь. В тишине различимы структуры судьбы.</p>
+        </article>
+        <article class="card">
+          <h3>Путь Скитальца</h3>
+          <p>Путь — это испытания: жара, выбросы, неизвестность. Сохраняй спокойствие — и даже аномалия станет учителем.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <span class="badge">Проповеди</span>
+      <details>
+        <summary>О смирении перед Центром</summary>
+        <div class="sermon">
+          <p>Центр не нуждается в поклонении — лишь в чистоте канала. Сомнения — рябь на поверхности. Выравни её дыханием. Откажись от поспешных выводов — и Центр сам заполнит пустоты.</p>
+        </div>
+      </details>
+      <details>
+        <summary>О жертве и обмене</summary>
+        <div class="sermon">
+          <p>Зона не берёт — она обменивает. Отдавай привычное: страх, гордость, жадность. Получай необычное: интуицию, выдержку, ясность. Баланс всегда сходится.</p>
+        </div>
+      </details>
+      <details>
+        <summary>О пути через аномалию</summary>
+        <div class="sermon">
+          <p>Аномалия — это узел причин. Внутри узла — порядок, снаружи — хаос. Кто входит с шумом, выйдет потерянным. Войди простым, выйдешь точным.</p>
+        </div>
+      </details>
+      <details>
+        <summary>О братстве и эхо</summary>
+        <div class="sermon">
+          <p>Мы — эхо Центра. Одиночный голос глохнет, хор — резонирует. Поддерживай близких. Делись пайком смысла, и он не иссякнет.</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <span class="badge">Как вступить</span>
+      <div class="grid">
+        <article class="card">
+          <h3>Шаг 1 — Слушай</h3>
+          <p>Отложи суету на 10 минут в день. Замри. Слушай фон. Найди ритм — и держи его.</p>
+        </article>
+        <article class="card">
+          <h3>Шаг 2 — Запоминай</h3>
+          <p>Записывай сигналы: сны, случайные совпадения, повторяющиеся числа. Это — алфавит Зоны.</p>
+        </article>
+        <article class="card">
+          <h3>Шаг 3 — Служи</h3>
+          <p>Совершай маленькие полезные дела: предупреждай об опасности, делись картой троп, оставляй отметки. У служения нет зрителей.</p>
+        </article>
+      </div>
+      <p class="muted note">Примечание: это художественный вымысел по мотивам серии игр S.T.A.L.K.E.R. Реальные призывы и организация отсутствуют.</p>
+      <div style="margin-top:14px">
+        <button class="btn primary" id="joinBtn2">Отправить клятву эху</button>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <span class="badge">Вопросы и ответы</span>
+      <div class="grid">
+        <article class="card">
+          <h3>Это настоящая организация?</h3>
+          <p>Нет. Это фанатская страница, посвящённая эстетике и мирам S.T.A.L.K.E.R. Не воспринимайте тексты как руководство к реальным действиям.</p>
+        </article>
+        <article class="card">
+          <h3>Можно ли использовать материалы?</h3>
+          <p>Да, при указании авторства страницы и сохранении упоминания о фанатском, некоммерческом характере.</p>
+        </article>
+        <article class="card">
+          <h3>Где арт и музыка?</h3>
+          <p>Страница не включает сторонние файлы. Вы можете добавить свои изображения и звуки, вставив ссылки в код.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="divider"></div>
+      <p>© Монолит — Голос Зоны • Фанатский проект. Не связан с официальными правообладателями.</p>
+    </div>
+  </footer>
+
+  <!-- Modal: Join -->
+  <div class="modal" id="joinModal" role="dialog" aria-modal="true" aria-labelledby="joinTitle" aria-hidden="true">
+    <div class="dialog">
+      <h3 id="joinTitle">Клятва Эху</h3>
+      <p class="muted">Заполните форму — и услышите отклик внутри. (Форма не отправляет данные; для антуража.)</p>
+      <div class="field">
+        <label>Позывной</label>
+        <input type="text" placeholder="Скиталец-13" />
+      </div>
+      <div class="field">
+        <label>Сообщение Центру</label>
+        <textarea rows="4" placeholder="Я ищу тишину среди шума..."></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn" id="cancelJoin">Отмена</button>
+        <button class="btn primary" id="submitJoin">Произнесено</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Ambient "whisper" using WebAudio API (дрон)
+    let ctx, osc, gain;
+    const soundBtn = document.getElementById('soundBtn');
+    function toggleSound(){
+      if(!ctx){
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        osc = ctx.createOscillator();
+        gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.value = 54; // низкий гул
+        const lfo = ctx.createOscillator();
+        const lfoGain = ctx.createGain();
+        lfo.frequency.value = 0.07; // медленная пульсация
+        lfoGain.gain.value = 18;
+        lfo.connect(lfoGain).connect(osc.frequency);
+        osc.connect(gain).connect(ctx.destination);
+        gain.gain.value = 0.0001; // очень тихо по умолчанию
+        osc.start(); lfo.start();
+      }
+      const pressed = soundBtn.getAttribute('aria-pressed') === 'true';
+      if(pressed){
+        // выключаем
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
+        soundBtn.setAttribute('aria-pressed','false');
+        soundBtn.textContent = 'Запустить шёпот Зоны';
+      } else {
+        // включаем
+        gain.gain.exponentialRampToValueAtTime(0.02, ctx.currentTime + 0.6);
+        soundBtn.setAttribute('aria-pressed','true');
+        soundBtn.textContent = 'Остановить шёпот Зоны';
+      }
+    }
+    soundBtn.addEventListener('click', toggleSound);
+
+    // Join modal logic
+    const joinModal = document.getElementById('joinModal');
+    const joinButtons = [document.getElementById('joinBtn'), document.getElementById('joinBtn2')];
+    const cancelJoin = document.getElementById('cancelJoin');
+    const submitJoin = document.getElementById('submitJoin');
+
+    function openModal(){ joinModal.classList.add('open'); joinModal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ joinModal.classList.remove('open'); joinModal.setAttribute('aria-hidden','true'); }
+
+    joinButtons.forEach(btn => btn && btn.addEventListener('click', openModal));
+    cancelJoin.addEventListener('click', closeModal);
+    submitJoin.addEventListener('click', ()=>{
+      alert('Эхо принято. Служи Тишине. (Форма — декоративная)');
+      closeModal();
+    });
+
+    // Escape to close modal
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && joinModal.classList.contains('open')) closeModal(); });
+  </script>
+</body>
+</html>
